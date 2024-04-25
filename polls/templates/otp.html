@@ -1,0 +1,86 @@
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    </head>
+
+<h1>Welcome to html</h1>
+
+<div class="form-group">
+    <label>Please Enter Your Mobile Number</label>
+    <input type="text" class="form-control" required="required" placeholder="9876543210" id="mobileinputnumber">
+</div>
+<div class="form-group">
+    <input type="submit" class="btn btn-primary btn-lg btn-block mobileinputbutton" value="Send otp">
+    <span id="mobileinputerrors"></span>
+</div>
+
+<form>
+    <input autocomplete="one-time-code" required/>
+    <input type="submit">
+  </form>
+
+
+<script>
+    let sendOtpUrl = "https://clone.discoverpilgrim.com/api/sendotpforloginandsignup";
+    //$(".mobileinputbutton").click(function(){
+       //let phone=$("#mobileinputnumber").val();
+    data = {
+        "phone": "9315662386"
+    }
+    console.log('Shooting otp');
+    $.ajax({
+        type: "POST",
+        url: sendOtpUrl,
+        data: data,
+        async: true,
+        success: function (data) {
+            console.log('Recieved otp');
+            console.log(data);
+            registereduser=true;
+        //$('#errormsg').html('');
+        //$(`#${parentID} #otp_msg`).html('OTP Successfully Sent to ' + inputNum);
+        //hideAndShow(parentID, false, e.target);
+        },
+        error: function (response) {
+            console.log(response.responseJSON.error);
+            stringmain=response.responseJSON.error
+            substringsub='Please Signup';
+            if(stringmain.includes(substringsub)){
+                console.log('Truth it contains');
+                registereduser=false;
+
+            }
+        //$('#errormsg').html(`${response.responseJSON.error}`)
+        //$('#go_back').html('Go back');
+        },
+        dataType: 'json',
+    });
+//});
+
+</script>
+  
+
+  <script>
+    if ('OTPCredential' in window) {
+        window.addEventListener('DOMContentLoaded', e => {
+          const input = document.querySelector('input[autocomplete="one-time-code"]');
+          if (!input) return;
+          const ac = new AbortController();
+          const form = input.closest('form');
+          if (form) {
+            form.addEventListener('submit', e => {
+              ac.abort();
+            });
+          }
+          navigator.credentials.get({
+            otp: { transport:['sms'] },
+            signal: ac.signal
+          }).then(otp => {
+            input.value = otp.code;
+            if (form) form.submit();
+          }).catch(err => {
+            console.log(err);
+          });
+
+        });
+      }
+  </script>
