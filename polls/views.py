@@ -1210,7 +1210,7 @@ def autologin_customer(request):
 
         # Replace these values with your domain name and Multipass secret
         domain_name = settings.SHOP
-        multipass_secret = "97413d838c9d8328e770f1f8db3ad0ba"
+        multipass_secret = settings.MULTIPASS_SECRET
 
         customer_data = {
             "email": email,
